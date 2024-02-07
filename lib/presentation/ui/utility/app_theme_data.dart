@@ -5,7 +5,7 @@ class AppThemeData {
   static ThemeData lightThemData = ThemeData(
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.white54,
-      elevation: 5,
+      elevation: 3,
       titleTextStyle: TextStyle(fontSize: 18, color: Colors.black),
     ),
     progressIndicatorTheme:

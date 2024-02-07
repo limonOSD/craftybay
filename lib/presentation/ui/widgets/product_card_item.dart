@@ -1,19 +1,21 @@
+import 'package:craftybay/data/models/product_model.dart';
 import 'package:craftybay/presentation/ui/screens/product_details_screen.dart';
 import 'package:craftybay/presentation/ui/utility/app_colors.dart';
-import 'package:craftybay/presentation/ui/utility/assets_path.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProductCardItem extends StatelessWidget {
   const ProductCardItem({
     super.key,
+    required this.product,
   });
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(() => const ProductDetailsScreen());
+        Get.to(() => ProductDetailsScreen(productId: product.id!));
       },
       borderRadius: BorderRadius.circular(16),
       child: SizedBox(
@@ -30,11 +32,11 @@ class ProductCardItem extends StatelessWidget {
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
                 ),
-                child: Image.asset(
-                  AssetsPath.dummyShoeImageJpg,
+                child: Image.network(
+                  product.image ?? '',
                   width: 160,
                   height: 120,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.scaleDown,
                 ),
               ),
               Padding(
@@ -42,10 +44,10 @@ class ProductCardItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Nike shoe 120h 2024 Edition',
+                    Text(
+                      product.title ?? '',
                       maxLines: 1,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: Colors.black54,
@@ -54,9 +56,9 @@ class ProductCardItem extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        const Text(
-                          '\$120',
-                          style: TextStyle(
+                        Text(
+                          '৳${product.price ?? 0}',
+                          style: const TextStyle(
                             fontSize: 12,
                             color: AppColors.primaryColor,
                             fontWeight: FontWeight.w600,
@@ -65,17 +67,17 @@ class ProductCardItem extends StatelessWidget {
                         const SizedBox(
                           width: 8,
                         ),
-                        const Wrap(
+                        Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.star,
                               color: Colors.amber,
                               size: 14,
                             ),
                             Text(
-                              '4.4',
-                              style: TextStyle(
+                              '${product.star ?? 0}',
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.black45,
                                 fontWeight: FontWeight.w600,

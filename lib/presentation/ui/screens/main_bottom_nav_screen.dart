@@ -1,5 +1,10 @@
+import 'package:craftybay/presentation/state_holders/categorycontroller.dart';
+import 'package:craftybay/presentation/state_holders/home_banner_controller.dart';
 import 'package:craftybay/presentation/state_holders/main_bottom_nav_controller.dart';
-import 'package:craftybay/presentation/ui/screens/carts_screen.dart';
+import 'package:craftybay/presentation/state_holders/new_product_controller.dart';
+import 'package:craftybay/presentation/state_holders/popular_product_controller.dart';
+import 'package:craftybay/presentation/state_holders/special_product_controller.dart';
+import 'package:craftybay/presentation/ui/screens/carts_list_screen.dart';
 import 'package:craftybay/presentation/ui/screens/category_screen.dart';
 import 'package:craftybay/presentation/ui/screens/home_screen.dart';
 import 'package:craftybay/presentation/ui/screens/wishlist_screen.dart';
@@ -15,10 +20,22 @@ class MainBottomNavScreen extends StatefulWidget {
 }
 
 class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find<HomeBannerController>().getBannerList();
+      Get.find<CategoryController>().getCategoryList();
+      Get.find<PopularProductController>().getPopularProductList();
+      Get.find<SpecialProductController>().getSpecialProductList();
+      Get.find<NewProductController>().getNewProductList();
+    });
+  }
+
   final List<Widget> _screens = const [
     HomeScreen(),
     CategoryScreen(),
-    CartsScreen(),
+    CartListScreen(),
     WishListScreen(),
   ];
 

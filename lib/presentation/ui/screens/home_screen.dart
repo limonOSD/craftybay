@@ -1,8 +1,14 @@
+import 'package:craftybay/data/models/product_model.dart';
 import 'package:craftybay/presentation/state_holders/auth_controller.dart';
+import 'package:craftybay/presentation/state_holders/home_banner_controller.dart';
 import 'package:craftybay/presentation/state_holders/main_bottom_nav_controller.dart';
+import 'package:craftybay/presentation/state_holders/new_product_controller.dart';
+import 'package:craftybay/presentation/state_holders/popular_product_controller.dart';
+import 'package:craftybay/presentation/state_holders/special_product_controller.dart';
 import 'package:craftybay/presentation/ui/screens/auth/verify_email_screen.dart';
 import 'package:craftybay/presentation/ui/screens/product_list_screen.dart';
 import 'package:craftybay/presentation/ui/utility/assets_path.dart';
+import 'package:craftybay/presentation/ui/widgets/center_circularprogressindicator.dart';
 import 'package:craftybay/presentation/ui/widgets/home/category_list.dart';
 import 'package:craftybay/presentation/ui/widgets/home/circle_icon_button.dart';
 import 'package:craftybay/presentation/ui/widgets/banner_carousel.dart';
@@ -35,7 +41,19 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 16,
               ),
-              const BannerCarousel(),
+              SizedBox(
+                  height: 210,
+                  child: GetBuilder<HomeBannerController>(
+                      builder: (homeBannerController) {
+                    return Visibility(
+                        visible: homeBannerController.inProgress == false,
+                        replacement: const CenterCircularProgressIndicator(),
+                        child: BannerCarousel(
+                          bannerList:
+                              homeBannerController.bannerListModel.bannerList ??
+                                  [],
+                        ));
+                  })),
               const SizedBox(
                 height: 16,
               ),
@@ -52,7 +70,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.to(() => const ProductListScreen());
                 },
               ),
-              productList,
+              GetBuilder<PopularProductController>(
+                  builder: (popularProductController) {
+                return Visibility(
+                  visible: popularProductController.inProgress == false,
+                  replacement: const CenterCircularProgressIndicator(),
+                  child: productList(
+                      popularProductController.productListModel.productList ??
+                          []),
+                );
+              }),
               const SizedBox(
                 height: 8,
               ),
@@ -60,7 +87,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: 'Special',
                 onTapSeeAll: () {},
               ),
-              productList,
+              GetBuilder<SpecialProductController>(
+                  builder: (specialProductController) {
+                return Visibility(
+                  visible: specialProductController.inProgress == false,
+                  replacement: const CenterCircularProgressIndicator(),
+                  child: productList(
+                      specialProductController.productListModel.productList ??
+                          []),
+                );
+              }),
               const SizedBox(
                 height: 8,
               ),
@@ -68,7 +104,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: 'New',
                 onTapSeeAll: () {},
               ),
-              productList,
+              GetBuilder<NewProductController>(builder: (newProductController) {
+                return Visibility(
+                    visible: newProductController.inProgress == false,
+                    replacement: const CenterCircularProgressIndicator(),
+                    child: productList(
+                        newProductController.productListModel.productList ??
+                            []));
+              }),
             ],
           ),
         ),
@@ -76,16 +119,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  SizedBox get productList {
+  SizedBox productList(List<ProductModel> productList) {
     return SizedBox(
       height: 190,
       child: ListView.separated(
-        itemCount: 10,
+        itemCount: productList.length,
         primary: false,
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return const ProductCardItem();
+          return ProductCardItem(
+            product: productList[index],
+          );
         },
         separatorBuilder: (_, __) {
           return const SizedBox(
@@ -129,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: [
         CircleIconButton(
             onTap: () async {
-              await Get.find<AuthController>().clearAuthData();
+              await AuthController.clearAuthData();
               Get.offAll(() => const VerifyEmailScreen());
             },
             iconData: Icons.logout),

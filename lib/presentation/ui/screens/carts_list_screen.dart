@@ -1,17 +1,27 @@
+import 'package:craftybay/presentation/state_holders/cart_list_controller.dart';
 import 'package:craftybay/presentation/state_holders/main_bottom_nav_controller.dart';
 import 'package:craftybay/presentation/ui/utility/app_colors.dart';
 import 'package:craftybay/presentation/ui/widgets/carts/cart_product_itme.dart';
+import 'package:craftybay/presentation/ui/widgets/center_circularprogressindicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CartsScreen extends StatefulWidget {
-  const CartsScreen({super.key});
+class CartListScreen extends StatefulWidget {
+  const CartListScreen({super.key});
 
   @override
-  State<CartsScreen> createState() => _CartsScreenState();
+  State<CartListScreen> createState() => _CartListScreenState();
 }
 
-class _CartsScreenState extends State<CartsScreen> {
+class _CartListScreenState extends State<CartListScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<CartListController>().getCartList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -33,27 +43,37 @@ class _CartsScreenState extends State<CartsScreen> {
             ),
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: ListView.separated(
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return const CartProductItem();
-                },
-                separatorBuilder: (_, __) => const SizedBox(
-                  height: 8,
+        body: GetBuilder<CartListController>(builder: (cartListController) {
+          if (cartListController.inProgress == true) {
+            return const CenterCircularProgressIndicator();
+          }
+          return Column(
+            children: [
+              Expanded(
+                child: ListView.separated(
+                  itemCount:
+                      cartListController.cartListModel.cartItemList?.length ??
+                          0,
+                  itemBuilder: (context, index) {
+                    return CartProductItem(
+                      cartItem:
+                          cartListController.cartListModel.cartItemList![index],
+                    );
+                  },
+                  separatorBuilder: (_, __) => const SizedBox(
+                    height: 8,
+                  ),
                 ),
               ),
-            ),
-            totalPriceAndCheckcoutSection,
-          ],
-        ),
+              totalPriceAndCheckcoutSection(cartListController.totalPrice),
+            ],
+          );
+        }),
       ),
     );
   }
 
-  Container get totalPriceAndCheckcoutSection {
+  Container totalPriceAndCheckcoutSection(RxDouble totalPrice) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -63,10 +83,10 @@ class _CartsScreenState extends State<CartsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Total Price',
                 style: TextStyle(
                   fontSize: 15,
@@ -74,12 +94,14 @@ class _CartsScreenState extends State<CartsScreen> {
                   color: Colors.black45,
                 ),
               ),
-              Text(
-                '\$148546551',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryColor,
+              Obx(
+                () => Text(
+                  '৳$totalPrice',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryColor,
+                  ),
                 ),
               ),
             ],
