@@ -44,7 +44,8 @@ class _BannerCarouselState extends State<BannerCarousel> {
                           color: AppColors.primaryColor,
                           borderRadius: BorderRadius.circular(8),
                           image: DecorationImage(
-                              image: NetworkImage(banner.image ?? ''))),
+                              image: NetworkImage(banner.image ?? ''),
+                              fit: BoxFit.fitHeight)),
                       alignment: Alignment.center,
                     ),
                     Padding(
@@ -57,7 +58,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
                             child: Text(
                               banner.title ?? '',
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -71,7 +72,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
                             child: Text(
                               banner.shortDes ?? '',
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
                               ),

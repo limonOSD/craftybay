@@ -21,8 +21,11 @@ class CompleteProfileController extends GetxController {
     _inProgress = true;
     update();
 
-    final response = await NetworkCaller()
-        .postRequest(Urls.createProfile, token: token, body: params.toJson());
+    final response = await NetworkCaller().postRequest(
+      Urls.createProfile,
+      body: params.toJson(),
+      token: token,
+    );
     _inProgress = false;
     if (response.isSuccess) {
       _profile = Profile.fromJson(response.responseData['data']);

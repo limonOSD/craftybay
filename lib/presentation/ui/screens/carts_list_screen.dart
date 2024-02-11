@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CartListScreen extends StatefulWidget {
-  const CartListScreen({super.key});
+  const CartListScreen({
+    super.key,
+  });
 
   @override
   State<CartListScreen> createState() => _CartListScreenState();

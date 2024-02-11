@@ -2,6 +2,7 @@ import 'package:craftybay/data/models/product_details_data.dart';
 import 'package:craftybay/presentation/state_holders/add_to_cart_controller.dart';
 import 'package:craftybay/presentation/state_holders/auth_controller.dart';
 import 'package:craftybay/presentation/state_holders/product_details_controller.dart';
+import 'package:craftybay/presentation/state_holders/review_list_controller.dart';
 
 import 'package:craftybay/presentation/ui/screens/auth/verify_email_screen.dart';
 import 'package:craftybay/presentation/ui/screens/reviewsScreen.dart';
@@ -183,7 +184,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Row reviewAndRatingRow(int rating) {
+  Row reviewAndRatingRow(
+    int rating,
+  ) {
     return Row(
       children: [
         Wrap(

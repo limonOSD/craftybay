@@ -24,7 +24,29 @@ class CartListController extends GetxController {
     final response = await NetworkCaller().getRequest(Urls.cartList);
     if (response.isSuccess) {
       _cartListModel = CartListModel.fromJson(response.responseData);
-      _totalPrice.value = _calculateTotalPrice;
+      _totalPrice.value = calculateTotalPrice();
+      isSuccess = true;
+    } else {
+      _errorMessage = response.errorMessage;
+    }
+    _inProgress = false;
+    update();
+    return isSuccess;
+  }
+
+  Future<bool> deleteCartItem(int productIdx) async {
+    bool isSuccess = false;
+    _inProgress = true;
+
+    update();
+    final response =
+        await NetworkCaller().getRequest(Urls.deleteCartItem(productIdx));
+    if (response.isSuccess) {
+      //_cartListModel = CartListModel.fromJson(response.responseData);
+      _cartListModel.cartItemList
+          ?.removeWhere((element) => element.productId == productIdx);
+      calculateTotalPrice();
+      update();
       isSuccess = true;
     } else {
       _errorMessage = response.errorMessage;
@@ -38,10 +60,10 @@ class CartListController extends GetxController {
     _cartListModel.cartItemList
         ?.firstWhere((element) => element.id == id)
         .quantity = quantity;
-    _totalPrice.value = _calculateTotalPrice;
+    _totalPrice.value = calculateTotalPrice();
   }
 
-  double get _calculateTotalPrice {
+  double calculateTotalPrice() {
     double total = 0;
     for (CartItem item in _cartListModel.cartItemList ?? []) {
       total +=
