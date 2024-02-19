@@ -1,4 +1,4 @@
-import 'package:craftybay/data/models/profile.dart';
+import 'package:craftybay/data/models/review_profile.dart';
 
 class ReviewListItem {
   int? id;
@@ -8,7 +8,7 @@ class ReviewListItem {
   int? productId;
   String? createdAt;
   String? updatedAt;
-  Profile? profile;
+  ReviewProfile? profile;
 
   ReviewListItem(
       {this.id,
@@ -28,8 +28,9 @@ class ReviewListItem {
     productId = json['product_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    profile =
-        json['profile'] != null ? Profile.fromJson(json['profile']) : null;
+    profile = json['profile'] != null
+        ? ReviewProfile.fromJson(json['profile'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {

@@ -2,10 +2,9 @@ import 'package:craftybay/data/models/product_details_data.dart';
 import 'package:craftybay/presentation/state_holders/add_to_cart_controller.dart';
 import 'package:craftybay/presentation/state_holders/auth_controller.dart';
 import 'package:craftybay/presentation/state_holders/product_details_controller.dart';
-import 'package:craftybay/presentation/state_holders/review_list_controller.dart';
 
 import 'package:craftybay/presentation/ui/screens/auth/verify_email_screen.dart';
-import 'package:craftybay/presentation/ui/screens/reviewsScreen.dart';
+import 'package:craftybay/presentation/ui/screens/reviews_screen.dart';
 import 'package:craftybay/presentation/ui/utility/app_colors.dart';
 import 'package:craftybay/presentation/ui/widgets/center_circularprogressindicator.dart';
 import 'package:craftybay/presentation/ui/widgets/product_details/color_selector.dart';
@@ -212,9 +211,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         const SizedBox(
           width: 8,
         ),
-        TextButton(
-          onPressed: () {
-            Get.to(() => const ReviewsScreen());
+        InkWell(
+          onTap: () {
+            Get.to(() => ReviewsScreen(productId: widget.productId));
           },
           child: const Text(
             'Reviews',

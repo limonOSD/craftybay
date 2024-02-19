@@ -88,7 +88,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                   height: 4.0,
                 ),
                 Text(
-                  'A 4 digit OTP code has been sent',
+                  'A 6 digit OTP code has been sent',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(
