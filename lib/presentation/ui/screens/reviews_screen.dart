@@ -1,3 +1,4 @@
+import 'package:craftybay/presentation/state_holders/auth_controller.dart';
 import 'package:craftybay/presentation/state_holders/review_controller.dart';
 import 'package:craftybay/presentation/ui/screens/create_review_screen.dart';
 import 'package:craftybay/presentation/ui/utility/app_colors.dart';
@@ -97,7 +98,14 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
             FloatingActionButton(
               backgroundColor: AppColors.primaryColor,
               onPressed: () {
-                Get.to(() => const CreateReviewScreen());
+                if (Get.find<AuthController>().isTokenNotNull == false) {
+                  AuthController.goToLogin();
+                  return;
+                }
+
+                Get.to(() => CreateReviewScreen(
+                      productId: widget.productId,
+                    ));
               },
               child: const Icon(
                 Icons.add,
