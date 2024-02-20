@@ -42,7 +42,6 @@ class CartListController extends GetxController {
     final response =
         await NetworkCaller().getRequest(Urls.deleteCartItem(productIdx));
     if (response.isSuccess) {
-      //_cartListModel = CartListModel.fromJson(response.responseData);
       _cartListModel.cartItemList
           ?.removeWhere((element) => element.productId == productIdx);
       calculateTotalPrice();

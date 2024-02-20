@@ -1,5 +1,6 @@
 import 'package:craftybay/data/models/product_details_data.dart';
 import 'package:craftybay/presentation/state_holders/add_to_cart_controller.dart';
+import 'package:craftybay/presentation/state_holders/add_to_wish_list_controller.dart';
 import 'package:craftybay/presentation/state_holders/auth_controller.dart';
 import 'package:craftybay/presentation/state_holders/product_details_controller.dart';
 
@@ -226,15 +227,42 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         const SizedBox(
           width: 8,
         ),
-        Card(
-          color: AppColors.primaryColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-          child: const Padding(
-            padding: EdgeInsets.all(4.0),
-            child: Icon(
-              Icons.favorite_outline_rounded,
-              size: 18,
-              color: Colors.white,
+        InkWell(
+          onTap: () async {
+            bool response = await Get.find<AddToWishListController>()
+                .addWishListItem(widget.productId);
+            print(response);
+            if (response) {
+              Get.showSnackbar(
+                const GetSnackBar(
+                  title: 'Success',
+                  message: 'Add Item',
+                  isDismissible: true,
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            } else {
+              Get.showSnackbar(
+                GetSnackBar(
+                  title: 'failed',
+                  message: Get.find<AddToWishListController>().errormessage,
+                  isDismissible: true,
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            }
+          },
+          child: Card(
+            color: AppColors.primaryColor,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            child: const Padding(
+              padding: EdgeInsets.all(4.0),
+              child: Icon(
+                Icons.favorite_outline_rounded,
+                size: 18,
+                color: Colors.white,
+              ),
             ),
           ),
         )

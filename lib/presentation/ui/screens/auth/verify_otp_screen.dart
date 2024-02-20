@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:craftybay/presentation/state_holders/send_email_otp_controller.dart';
 import 'package:craftybay/presentation/state_holders/verify_otp_controller.dart';
 import 'package:craftybay/presentation/ui/screens/auth/complete_profile_screen.dart';
 import 'package:craftybay/presentation/ui/screens/main_bottom_nav_screen.dart';
@@ -41,7 +42,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
       if (countdown <= 0) {
         setState(() {
           buttonEnabled = true;
-          timer.cancel(); // Stop the timer when countdown reaches 0
+          timer.cancel();
         });
       }
     });
@@ -49,7 +50,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
 
   @override
   void dispose() {
-    timer.cancel(); // Dispose timer to prevent memory leaks
+    timer.cancel();
     super.dispose();
   }
 
@@ -182,7 +183,6 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 TextButton(
                   onPressed: buttonEnabled
                       ? () {
-                          // Add functionality for button press here
                           countStart();
                         }
                       : null,

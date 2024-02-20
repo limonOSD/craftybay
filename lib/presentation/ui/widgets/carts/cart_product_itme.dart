@@ -18,14 +18,6 @@ class CartProductItem extends StatefulWidget {
 }
 
 class _CartProductItemState extends State<CartProductItem> {
-  // void initState() {
-  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-  //     Get.find<CartListController>()
-  //         .deleteCartItem(widget.cartItem.productId ?? 0);
-  //   });
-  //   super.initState();
-  // }
-
   late ValueNotifier<int> noOfItems = ValueNotifier(widget.cartItem.quantity);
 
   @override
