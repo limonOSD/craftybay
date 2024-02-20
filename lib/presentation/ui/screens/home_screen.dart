@@ -1,13 +1,16 @@
 import 'package:craftybay/data/models/product_model.dart';
 import 'package:craftybay/presentation/state_holders/auth_controller.dart';
+import 'package:craftybay/presentation/state_holders/brand_list_controller.dart';
 import 'package:craftybay/presentation/state_holders/home_banner_controller.dart';
 import 'package:craftybay/presentation/state_holders/main_bottom_nav_controller.dart';
 import 'package:craftybay/presentation/state_holders/new_product_controller.dart';
 import 'package:craftybay/presentation/state_holders/popular_product_controller.dart';
 import 'package:craftybay/presentation/state_holders/special_product_controller.dart';
 import 'package:craftybay/presentation/ui/screens/auth/verify_email_screen.dart';
+import 'package:craftybay/presentation/ui/screens/brand_screen.dart';
 import 'package:craftybay/presentation/ui/screens/product_list_screen.dart';
 import 'package:craftybay/presentation/ui/utility/assets_path.dart';
+import 'package:craftybay/presentation/ui/widgets/brand_screen.dart/category_brand_item.dart';
 import 'package:craftybay/presentation/ui/widgets/center_circularprogressindicator.dart';
 import 'package:craftybay/presentation/ui/widgets/home/category_list.dart';
 import 'package:craftybay/presentation/ui/widgets/home/circle_icon_button.dart';
@@ -64,6 +67,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               categoryList,
+              const SizedBox(height: 8),
+              SectionTitle(
+                title: 'All Brand',
+                onTapSeeAll: () {
+                  Get.to(const BrandScreen());
+                },
+              ),
+              brandList,
+              const SizedBox(height: 8),
               SectionTitle(
                 title: 'Popular',
                 onTapSeeAll: () {
@@ -116,6 +128,34 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  SizedBox get brandList {
+    return SizedBox(
+      height: 100,
+      child: GetBuilder<BrandController>(builder: (brandController) {
+        return Visibility(
+          visible: brandController.inProgress == false,
+          replacement: const CenterCircularProgressIndicator(),
+          child: ListView.separated(
+            primary: false,
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: brandController.brandListModel.brandList?.length ?? 0,
+            itemBuilder: (context, index) {
+              return CategoryBrandItem(
+                brandList: brandController.brandListModel.brandList![index],
+              );
+            },
+            separatorBuilder: (_, __) {
+              return const SizedBox(
+                width: 12,
+              );
+            },
+          ),
+        );
+      }),
     );
   }
 

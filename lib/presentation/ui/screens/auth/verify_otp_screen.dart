@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:craftybay/presentation/state_holders/send_email_otp_controller.dart';
 import 'package:craftybay/presentation/state_holders/verify_otp_controller.dart';
 import 'package:craftybay/presentation/ui/screens/auth/complete_profile_screen.dart';
 import 'package:craftybay/presentation/ui/screens/main_bottom_nav_screen.dart';
